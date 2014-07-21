@@ -5,16 +5,36 @@ id_modal_div - div with tab content.
 */
 (function( $ ){
 
-  $.fn.tabcontrol = function( options ) {  
+  $.fn.tabcontrol = function( ul_selector ) {  
 
-    // Создаём настройки по-умолчанию, расширяя их с помощью параметров, которые были переданы
-    var settings = $.extend( {
+  	// использование Math.round() даст неравномерное распределение!
+	// function getRandomInt(min, max){
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
 
-    }, options);
+	// var randomTabContentClassName = "tab-content" + getRandomInt(1, 1000);
 
-    return this.each(function() {        
+  	this.after('<div id="tab_content"></div>');
 
-    });
+	var listItems = this.children();
+	var aTags = listItems.map(function (i, item, arr) {
+		return $(item).children()[0];
+	});
+
+	aTags.each(function () {
+		$(this).css('text-decoration', 'none');
+
+		$(this).on('click', function () {
+			//a.stopPropagation();
+			var idDiv = $(this).attr('href');
+			console.log(idDiv);
+			var htmlCurrentDiv = $('#' + idDiv).html();
+			$('#tab_content').html(htmlCurrentDiv);
+			return false;
+		});
+	});
+
+	return listItems;
 
   };
 })( jQuery );
